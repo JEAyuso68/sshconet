@@ -1,0 +1,5 @@
+# nombre|host|usuario|puerto
+Server|192.168.xxx.xxx|root|22
+webserver|yourdomain.net|user1|22
+Server4|192.168.xxx.xxx|user5|22
+Server5|192.168.xxx.xxx|user9|22

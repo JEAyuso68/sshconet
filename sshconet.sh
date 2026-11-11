@@ -1,13 +1,24 @@
 
 #!/bin/bash
 
-# Lista de servidores
-servidores=(
-    "Server|192.168.xxx.xxx|root|22"
-    "webserver|yourdomain.net|user1|22"
-    "Server4|192.168.xxx.xxx|user5|22"
-    "Server5|192.168.xxx.xxx|user9|22"
-)
+directorio_script="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+archivo_servidores="$directorio_script/serverssh"
+servidores=()
+
+if [[ ! -r "$archivo_servidores" ]]; then
+    printf 'No se puede leer el archivo de servidores: %s\n' "$archivo_servidores" >&2
+    exit 1
+fi
+
+while IFS= read -r linea || [[ -n "$linea" ]]; do
+    [[ -z "$linea" || "$linea" =~ ^[[:space:]]*# ]] && continue
+    servidores+=("$linea")
+done < "$archivo_servidores"
+
+if (( ${#servidores[@]} == 0 )); then
+    printf 'El archivo de servidores está vacío: %s\n' "$archivo_servidores" >&2
+    exit 1
+fi
 
 while true; do
     clear
